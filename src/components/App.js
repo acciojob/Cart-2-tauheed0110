@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import '../styles/App.css';
 
 const cartItems = [
@@ -63,14 +63,14 @@ const App = () => {
         }, 0)))
     }, [items, setItems])
   return (
-    <div id='app'>
+    <div id='main'>
         <nav>
             <h1>Header</h1>
             <h1 id='nav-cart-item-count'>Total Items: {items.length}</h1>
             <h1 id='cart-total-amount'>Totoal cart amount: {totalAmount}</h1>
             <button id='clear-all-cart' onClick={()=>{setItems([])}}>Clear Cart</button>
         </nav>
-        <ul className='cartContainer' id='cart-items-list'>
+        <ul className='container' id='cart-items-list'>
             {
                 items.length > 0 ? items.map((item, index) => {
                     return <Cart item={item} index={index} items={items} setItems={setItems}/>
@@ -84,22 +84,33 @@ const App = () => {
 
 export default App;
 
+const reducer = (state, action)=>{
+    switch(action.type){
+        case 'Increment':
+            return state+1
+        case 'decrement':
+            return state - 1;
+    }
+}
+
 function Cart({item, index, items, setItems}){
-    const [count, setCount] = useState(0);
+
+    const [state, dispatch] = useReducer(reducer, 0);
 
     function handleRemove(index){
         setItems(items.filter((item, i) => i != index));
     }
     return (
-        <li className='cart'>
+        <li className='cartContainer'>
             <h2>{item.name}</h2>
             <p>{item.detail}</p>
             <h2 id={'cart-amount-'+index}>{item.price}</h2>
             <div>
-                <span>count: {count}</span>
-                <button onClick={()=>setCount(count+1)}>+</button>
+                <span>count: {state}</span>
+                <button id={'increment-btn-'+index} onClick={()=>dispatch({type: 'Increment'})}>+</button>
+                <button id={'decrement-btn-'+index} onClick={()=>dispatch({type: 'decrement'})}>-</button>
             </div>
-            <button onClick={()=>{handleRemove(index)}}>Remove Item</button>
+            <button id={'cart-item-remove-'+index} onClick={()=>{handleRemove(index)}}>Remove Item</button>
         </li>
     )
 }
