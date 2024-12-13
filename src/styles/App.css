@@ -1,12 +1,20 @@
-h1 {
-    color: #27aedb;
-    text-align: center;
-    }
-    
+nav{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
 
-button{
-    color: #27aedb;
-    text-align: center;
-    justify-content: center;
-    align-items: center;
+.cartContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.cart{
+    padding: 12px;
+    border: 1px solid black;
+    border-radius: 10px;
+    max-width: 30%;
 }
